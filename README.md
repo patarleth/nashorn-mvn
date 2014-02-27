@@ -1,10 +1,10 @@
 If replacing your jdk/jvm with 1.8 isn't your thing, try vagrant!
 
-    http://www.vagrantup.com/
+<http://www.vagrantup.com/>
 
 setup a linux box, I almost always choose ubuntu 13.10 
 
-    http://nrel.github.io/vagrant-boxes/
+<http://nrel.github.io/vagrant-boxes/>
 
 vagrant up && vagrant ssh, then setup jdk8 and mvn (here's a little jdk8 help to get you started)
 
@@ -86,8 +86,8 @@ Before Dynalink and INVOKEDYNAMIC existed, in order to get hotspot to optimize o
 
 links!
 
-    https://blogs.oracle.com/nashorn/
-    https://blogs.oracle.com/nashorn/entry/welcome_to_the_nashorn_blog
-    http://openjdk.java.net/projects/nashorn/
-    https://wiki.openjdk.java.net/display/Nashorn/Main
-    https://bitbucket.org/adoptopenjdk/jdk8-nashorn
+* <https://blogs.oracle.com/nashorn/>
+* <https://blogs.oracle.com/nashorn/entry/welcome_to_the_nashorn_blog>
+* <http://openjdk.java.net/projects/nashorn/>
+* <https://wiki.openjdk.java.net/display/Nashorn/Main>
+* <https://bitbucket.org/adoptopenjdk/jdk8-nashorn>
