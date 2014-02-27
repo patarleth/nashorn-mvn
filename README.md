@@ -1,8 +1,8 @@
-Install jdk8
+install jdk8
 
 <https://jdk8.java.net/download.html>
 
-If replacing your jdk/jvm with 1.8 isn't your thing, try vagrant!
+if replacing your jdk/jvm with 1.8 isn't your thing, try vagrant!
 
 <http://www.vagrantup.com/>
 
@@ -71,8 +71,9 @@ src/bash/nashorn
     fi
 
 Nashorn features
-ECMAScript 5.1
-INVOKEDYNAMIC and metaobject protocol (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
+
+* ECMAScript 5.1
+* INVOKEDYNAMIC and metaobject protocol (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
 
 Why is the switch from the rhino inspired jsr-223 implementation in jdk1.6 to 1.8 important? Why not just use rhino?
 
