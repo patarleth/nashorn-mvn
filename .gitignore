@@ -1,0 +1,12 @@
+.classpath
+.project
+.settings/
+.idea/
+*~
+.\#*
+*.bak
+*.tmp
+*.swp
+*~.nib
+.loadpath
+target/
