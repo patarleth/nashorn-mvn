@@ -1,12 +1,12 @@
-If you don't feel like replacing your jdk/jvm with 1.8, get vagrant
+If replacing your jdk/jvm with 1.8 isn't your thing, try vagrant!
 
     http://www.vagrantup.com/
 
-setup a box, I almost always choose ubuntu 13.10 
+setup a linux box, I almost always choose ubuntu 13.10 
 
     http://nrel.github.io/vagrant-boxes/
 
-vagrant up && vagrant ssh, then setup jdk8 and mvn (here's a little jdk8 help)
+vagrant up && vagrant ssh, then setup jdk8 and mvn (here's a little jdk8 help to get you started)
 
     sudo add-apt-repository ppa:webupd8team/java
     sudo apt-get update
