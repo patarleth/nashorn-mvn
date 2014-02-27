@@ -1,6 +1,8 @@
 nashorn-mvn
 ============
 
+First off, mad, mad props to Attila Szegedi <https://github.com/szegedi> author of [dynalink](https://github.com/szegedi/dynalink) <http://szegedi.github.io/dynalink/> used by nashorn providing a "high-level linking and metaobject protocol library".
+
 prereqs - maven, jdk8, on ubuntu or osx.  
 
 If you're on windows you will need to run ubuntu in a virtual machine.
@@ -58,7 +60,7 @@ My test.js script
 2. creates an org.json.JSONObject, adds properties, then prints it using java.lang.System.out.println
 3. creates a nashorn json object, uses JSON.stringify to format it, printed iwth java.lang.System.out.println
     
-Here's what the files do -
+Here some pseudo code for the src/bash/ shell scripts -
 
 src/bash/mvngencp
 
@@ -91,23 +93,23 @@ src/bash/nashorn
 Nashorn features
 
 * ECMAScript 5.1
-* INVOKEDYNAMIC and metaobject protocol (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
+* INVOKEDYNAMIC and a metaobject protocol provided by Dynalink (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
 
-Ok, ok, ok.........SOOOOOOOO.....
+Ok, ok, ok.........SOOOOOOOO.....what the hell?
 
-Why the switch from the rhino inspired jsr-223 implementation shipped in jdk1.6 to nashorn in 1.8? Why not just use good old rhino (<https://developer.mozilla.org/en-US/docs/Rhino>)?
+Why switch away from the rhino inspired jsr-223 implementation that shipped in jdk1.6 to nashorn in 1.8? Why not just use rhino (<https://developer.mozilla.org/en-US/docs/Rhino>)?
 
 As if I had to tell you - performace. 
 
-TO envoke a method from a java class in a rhino script, rhino uses a single class acting like a map that returns the requested method.  The implication of a single 'get/lookup' method is the creation of a megamorphic code path which Hotspot CANNOT optimize or inline. I love that word - megamorphic!
+TO envoke a method in a java class from a rhino script, rhino uses a single class that acts like a map or dispatcher that returns the requested method.  The implication of a single 'get/lookup' method is the creation of a megamorphic code path which Hotspot CANNOT optimize or inline. I love that word - megamorphic! thanks Szegedi.
 
-The jvm instruction INVOKEDYNAMIC was added in jdk7 enabling the removal of this kind of 'get/lookup' code in dynamic jvm languages, in favor of linking/bootstrapping from a CallSite.  The CallSite can then be used by the runtime for reification of instructions and direct access to the function pointer. Viola! Hotspot can now optimize your script ;)  Watch the video...it almost makes sense.
+The jvm instruction INVOKEDYNAMIC was added in jdk7 enabling the removal of this kind of 'get/lookup' code in dynamic jvm languages, in favor of linking/bootstrapping from a CallSite.  A CallSite is then used by the runtime for reification of instructions and direct access to the function pointer. Viola! Hotspot can now optimize your script ;)  Watch the videos...it almost makes sense.
 
 One of the better quotes from the youtube video linked above - (INVOKEDYNAMIC provides) '...a way for classes to replace JVM linking rules with their own logic for their call sites, It's application-custom linking'
 
-Keep in mind that INVOKEDYNAMIC isn't magic. By itself the jvm instruction does not provide an api to help build languages. Afterall it's just an instruction.  However, INVOKEDYNAMIC does enable the creation of a class of apis like Dynalink (https://github.com/szegedi/dynalink) that is used by nashorn.
+Keep in mind that INVOKEDYNAMIC isn't magic. By itself the jvm instruction does not provide an api to help build languages. Afterall it's just an instruction.  However, INVOKEDYNAMIC does enable the creation of metaobject protocol apis like Dynalink (https://github.com/szegedi/dynalink) used by nashorn.
 
-Before Dynalink and INVOKEDYNAMIC, to get hotspot to optimize code assembled at runtime, required a custom classloader and a bytecode generator like <https://github.com/cojen/Cojen>. Good luck avoiding permgen memory leaks, it's God's work my friend.
+Before Dynalink, let alone INVOKEDYNAMIC existed, to get hotspot to optimize code assembled at runtime, required custom classloaders and bytecode generators like <https://github.com/cojen/Cojen>. Good luck avoiding permgen memory leaks with this strategy, it's God's work my friend.
 
 links!
 
