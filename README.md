@@ -16,6 +16,10 @@ vagrant up && vagrant ssh, then setup jdk8 and mvn (here's a little jdk8 help to
     sudo apt-get update
     sudo apt-get install oracle-java8-installer
     sudo apt-get install oracle-java8-set-default
+    
+install maven if it is not installed
+
+    if [ -z $(which mvn) ]; then sudo apt-get install maven; fi
 
 make a user bin folder to hold your scripts
 
