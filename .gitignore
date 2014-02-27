@@ -1,3 +1,4 @@
+.vagrant/
 .classpath
 .project
 .settings/
