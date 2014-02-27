@@ -75,7 +75,7 @@ Nashorn features
 * ECMAScript 5.1
 * INVOKEDYNAMIC and metaobject protocol (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
 
-Why is the switch from the rhino inspired jsr-223 implementation in jdk1.6 to 1.8 important? Why not just use rhino?
+Ok, ok, ok.........SO why the switch from the rhino inspired jsr-223 implementation in jdk1.6 to 1.8 important? Why not just use good old rhino?
 
 As if I had to tell you - performace. 
 
