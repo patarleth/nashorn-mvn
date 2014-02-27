@@ -1,0 +1,53 @@
+user_java_classes=~/java_classes
+
+fullpath=readlink
+stattime="stat -c '%Y'"
+
+if [ $(which greadlink) ]; then
+   fullpath=greadlink
+   stattime="stat -f '%m' -t '%s'"
+fi
+
+if [ -a ./pom.xml ]; then
+    fp=$("$fullpath" -f .)
+    fp=${fp//\//_} 
+
+    if [ ! -d ~/.tmp ]; then
+        mkdir ~/.tmp
+    fi
+
+    cpTxtLocation=$("$fullpath" -f ~/.tmp/$fp.cp.txt)
+
+    pomTimestamp=$($stattime pom.xml)
+
+    cpTxtTimestamp=0
+
+    generateCpTxt=0
+    #if cp.txt exists
+    if [ -a $cpTxtLocation ]; then 
+      cpTxtTimestamp=$($stattime $cpTxtLocation)
+      #if cp.txt timestamp is the same as pom.xml timestamp do nothing
+      if [ $pomTimestamp == $cpTxtTimestamp ]; then
+          generateCpTxt=0
+      else
+          #else timestamp is not the same
+          generateCpTxt=1
+      fi
+    else
+        #else cp.txt does not exist
+        generateCpTxt=1
+    fi
+    
+    #if generateCpTxt == 1
+    if [ $generateCpTxt == '1' ]; then
+      mvngencp > $cpTxtLocation
+      #set cp.txt timestamp to pom.xml timestamp
+      touch -r pom.xml $cpTxtLocation
+    fi  
+
+    echo "$(cat $cpTxtLocation):$user_java_classes"
+
+    #else pom.xml does not exist in the current directory
+else 
+     echo ".:$user_java_classes"
+fi

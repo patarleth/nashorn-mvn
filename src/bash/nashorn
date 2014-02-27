@@ -1,0 +1,9 @@
+cp=.
+
+if [ -a ./pom.xml ]; then
+  cp=.:$(mvnsavecp)
+fi
+
+export CLASSPATH=$cp:~/java_classes
+
+jjs -classpath "$CLASSPATH" "$@"
