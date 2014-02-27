@@ -75,19 +75,21 @@ Nashorn features
 * ECMAScript 5.1
 * INVOKEDYNAMIC and metaobject protocol (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
 
-Ok, ok, ok.........SO why the switch from the rhino inspired jsr-223 implementation in jdk1.6 to 1.8 important? Why not just use good old rhino?
+Ok, ok, ok.........SOOOOOOOO.....
+
+Why the switch from the rhino inspired jsr-223 implementation shipped in jdk1.6 to nashorn in 1.8? Why not just use good old rhino (<https://developer.mozilla.org/en-US/docs/Rhino>)?
 
 As if I had to tell you - performace. 
 
-When envoking a method from a java class in a rhino script, rhino uses a single class that acts like a map returning the requested method.  The implication of a single 'get/lookup' method, is a single megamorphic code path which Hotspot CANNOT optimize or inline.
+TO envoke a method from a java class in a rhino script, rhino uses a single class acting like a map that returns the requested method.  The implication of a single 'get/lookup' method is the creation of a megamorphic code path which Hotspot CANNOT optimize or inline. I love that word - megamorphic!
 
-INVOKEDYNAMIC was added in jdk7 and now 8, enabling the removal of all of this 'get/lookup' code from your app in favor of dynamic linking/bootstrapping from a CallSite.  The CallSite is then used by the runtime for reification of instructions and direct access to the function pointer which Hotspot can now use ;)  Watch the video...it almost makes sense.
+The jvm instruction INVOKEDYNAMIC was added in jdk7 enabling the removal of this kind of 'get/lookup' code in dynamic jvm languages, in favor of linking/bootstrapping from a CallSite.  The CallSite can then be used by the runtime for reification of instructions and direct access to the function pointer. Viola! Hotspot can now optimize your script ;)  Watch the video...it almost makes sense.
 
 One of the better quotes from the youtube video linked above - (INVOKEDYNAMIC provides) '...a way for classes to replace JVM linking rules with their own logic for their call sites, It's application-custom linking'
 
-INVOKEDYNAMIC by itself does not provide an api to help build languages, its just a jvm instruction.  INVOKEDYNAMIC enables the creation of a class of apis like the one nashorn uses - Dynalink (https://github.com/szegedi/dynalink)
+Keep in mind that INVOKEDYNAMIC isn't magic. By itself the jvm instruction does not provide an api to help build languages. Afterall it's just an instruction.  However, INVOKEDYNAMIC does enable the creation of a class of apis like Dynalink (https://github.com/szegedi/dynalink) that is used by nashorn.
 
-Before Dynalink and INVOKEDYNAMIC existed, in order to get hotspot to optimize of this type of code required a custom classloader and a bytecode generator like https://github.com/cojen/Cojen,  Good luck avoiding permgen memory leaks.
+Before Dynalink and INVOKEDYNAMIC, to get hotspot to optimize code assembled at runtime, required a custom classloader and a bytecode generator like <https://github.com/cojen/Cojen>. Good luck avoiding permgen memory leaks, it's God's work my friend.
 
 links!
 
