@@ -50,7 +50,7 @@ Now that you've either got vagrant up/vagrant ssh working or set your computer u
 
 * nashorn [src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js)
 
-[src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js) does thre things -
+[src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js) does three things -
 
 My test.js script
 
