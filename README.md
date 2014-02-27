@@ -38,7 +38,13 @@ copy the source code from this project into ~/bin/
 
 finally test the project with -
 
-    nashorn src/js/test.js
+* nashorn [src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js)
+
+[src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js) does thre things -
+
+1. prints the content of the .js file
+2. creates an org.json.JSONObject, adds properties, then prints it using java.lang.System.out.println
+3. creates a nashorn json object, uses JSON.stringify to format it, printed iwth java.lang.System.out.println
     
 Here's what the files do -
 
