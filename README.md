@@ -1,3 +1,7 @@
+Install jdk8
+
+<https://jdk8.java.net/download.html>
+
 If replacing your jdk/jvm with 1.8 isn't your thing, try vagrant!
 
 <http://www.vagrantup.com/>
