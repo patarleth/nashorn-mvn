@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 user_java_classes=~/java_classes
 
 fullpath=readlink

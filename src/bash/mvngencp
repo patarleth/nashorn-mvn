@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 grepResults=$(mvn dependency:build-classpath | grep -A 1 'Dependencies classpath:')
 cp=
 for i in $grepResults ; do cp=$i; done

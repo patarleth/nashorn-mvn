@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 cp=.
 
 if [ -a ./pom.xml ]; then
