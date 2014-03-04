@@ -8,4 +8,10 @@ fi
 
 export CLASSPATH=$cp:~/java_classes
 
-jjs -classpath "$CLASSPATH" "$@"
+java_cmd="jjs -classpath \"$CLASSPATH\""
+
+if [ "$(command -v drip)" != "" ]; then
+    java_cmd="drip -classpath \"$CLASSPATH\" jdk.nashorn.tools.Shell"
+fi
+
+$java_cmd "$@"

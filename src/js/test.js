@@ -4,7 +4,9 @@ var CollectionsAndFiles = new JavaImporter(
     java.lang.System);
 
 with (CollectionsAndFiles) {
-    var cmd = System.getProperties().get('sun.java.command').split(' ');
+    var sun_java_command = System.getProperties().get('sun.java.command');
+    System.out.println(sun_java_command);
+    var cmd = sun_java_command.split(' ');
     var filename = cmd[cmd.length-1];
     var file = new File(filename);
     var url = file.toURI().toURL().openConnection();
