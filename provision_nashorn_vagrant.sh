@@ -22,24 +22,21 @@ if [ "$(command -v git)" = "" ]; then sudo apt-get -y install git 1.7.1; fi
 if [ "$(command -v markdown)" = "" ]; then sudo apt-get -y install markdown; fi
 if [ "$(command -v lynx)" = "" ]; then sudo apt-get -y install lynx; fi
 
-#finally clone and build the maven project from git
-sudo su vagrant
+#finally clone and build the maven project from git as vagrant
 
-#make a random 'projects' folder in the user home folder 
+#first make a random 'projects' folder in the user home folder 
 mkdir -p /home/vagrant/projects
-cd /home/vagrant/projects
-
 mkdir -p /home/vagrant/bin
 
 #clone the repos
-git clone https://github.com/patarleth/nashorn-mvn.git
+git clone https://github.com/patarleth/nashorn-mvn.git /home/vagrant/projects/nashorn-mvn
 
 #build them
-cd nashorn-mvn
+cd /home/vagrant/projects/nashorn-mvn
 mvn clean install
 
 #copy to user bin folder
-cp src/bash/* /home/vagrant/bin/.
+cp /home/vagrant/projects/nashorn-mvn/src/bash/* /home/vagrant/bin/.
 
 #add src/bash to path is user bin is not in path
 if [ "$(command -v nashorn)" = "" ]; then export PATH="/home/vagrant/projects/nashorn-mvn/src/bash:$PATH"; fi 
@@ -48,11 +45,9 @@ if [ "$(command -v nashorn)" = "" ]; then export PATH="/home/vagrant/projects/na
 nashorn src/js/test.js
 
 #test the js mojo plugin
-cd /home/vagrant/projects
-git clone https://github.com/patarleth/nashorn-mvn-test.git
+git clone https://github.com/patarleth/nashorn-mvn-test.git /home/vagrant/projects/nashorn-mvn-test
 
-cd nashorn-mvn-test
+cd /home/vagrant/projects/nashorn-mvn-test
 mvn clean install
 
-echo 'run:'
-echo 'markdown README.md | lynx -stdin'
+chown -R vagrant:vagrant /home/vagrant
