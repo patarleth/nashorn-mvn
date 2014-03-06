@@ -31,10 +31,10 @@ cd /home/vagrant/projects
 
 mkdir -p /home/vagrant/bin
 
-#clone the repo
+#clone the repos
 git clone https://github.com/patarleth/nashorn-mvn.git
 
-#build it
+#build them
 cd nashorn-mvn
 mvn clean install
 
@@ -46,6 +46,13 @@ if [ "$(command -v nashorn)" = "" ]; then export PATH="/home/vagrant/projects/na
 
 #run it
 nashorn src/js/test.js
+
+#test the js mojo plugin
+cd /home/vagrant/projects
+git clone https://github.com/patarleth/nashorn-mvn-test.git
+
+cd nashorn-mvn-test
+mvn clean install
 
 echo 'run:'
 echo 'markdown README.md | lynx -stdin'
