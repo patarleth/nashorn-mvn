@@ -42,65 +42,23 @@ and add the folder to your path by editing your ~/.profile like so -
         PATH="$HOME/bin:$PATH"
     fi
 
-reload the .profile if changed
+reload the .profile if you had to add ~/bin to your path
 
     source ~/.profile
 
-copy the source code from this project into ~/bin/
+copy the source code from this project's src/bash folder into ~/bin/
 
     chmod +x ./src/bash/*
     cp ./src/bash/* ~/bin/.
 
 
-nashorn
+What is this thing called nashorn
 ===========
-
-Now that you've either got vagrant up/vagrant ssh working or set your computer up, it's time to test the project -
-
-* nashorn [src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js)
-
-[src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js) does three things -
-
-My test.js script
-
-1. prints the content of the .js file
-2. creates an org.json.JSONObject, adds properties, then prints it using java.lang.System.out.println
-3. creates a nashorn json object, uses JSON.stringify to format it, printed iwth java.lang.System.out.println
-    
-Here some pseudo code for the src/bash/ shell scripts -
-
-src/bash/mvngencp
-
-    generates a project classpath using mvn dependency:build-classpath
-
-src/bash/mvnsavecp
-
-    if pom.xml exists
-      if ~/.tmp/escaped_foldername.cp.txt exists
-        if timestamp of pom.xml match the .cp.txt file 
-          use ~/.tmp/escaped_foldername.cp.txt
-        else
-          call mvngencp save to ~/.tmp/escaped_foldername.cp.txt
-        fi
-      else
-        call mvngencp save to ~/.tmp/escaped_foldername.cp.txt
-      fi
-      return cp
-    else
-      do nothing
-    fi      
-
-src/bash/nashorn
-
-    if pom.xml exists
-      cp = mvnsavecp
-      jjs -classpath "$cp"
-    fi
 
 Nashorn features
 
 * ECMAScript 5.1
-* INVOKEDYNAMIC and a metaobject protocol provided by Dynalink (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
+* Based on INVOKEDYNAMIC and a metaobject protocol provided by Dynalink (WATCH https://www.youtube.com/watch?v=UIv86fUSORM)
 
 Ok, ok, ok.........SOOOOOOOO.....what the hell?
 
@@ -130,7 +88,9 @@ links!
 Maven
 ===========
 
-Exec'ing a java main from a pom file is easy. I've included 2 sample java classes - ExecJsScriptEngine which can then be executed in a pom file like so -
+If I have to tell you what maven is go away...no, no go here and read all about it <http://maven.apache.org/>
+
+Exec'ing a java main based on pom file is easy. I've included a couple sample java classes that show two ways to do this.  The first is ExecJsScriptEngine which executes a java main in a pom file  like so -
 
 <pre>
       <plugin>
@@ -139,7 +99,7 @@ Exec'ing a java main from a pom file is easy. I've included 2 sample java classe
         <version>1.2.1</version>
         <executions>
           <execution>
-            <id>generateJavaClassesFromJson</id>
+            <id>demoJsFileAtInitPhase</id>
             <phase>initialize</phase>
             <configuration>
               <mainClass>ExecJsScriptEngine</mainClass>
@@ -153,10 +113,116 @@ Exec'ing a java main from a pom file is easy. I've included 2 sample java classe
               <goal>java</goal>
             </goals>
           </execution>
-        <executions>
-      <plugin>
+        </executions>
+      </plugin>
 </pre>
 
-This strategty is definately a bit clumbsy, but it works. If you would like to parameterize the script checkout how to write maven plugins here:
+This strategty is definately a bit clumbsy, but it works. If you would like to parameterize the script or tighten up how you interact with the code, checkout the guide on plugins here:
+
 * <https://maven.apache.org/guides/plugin/guide-java-plugin-development.html>
 
+If you do decide to convert the main into a Mojo plugin, I've included a very simple plugin JsScriptEngineMojo.java that gives you a head start. Configured like so -
+
+<pre>
+      <plugin>
+        <groupId>org.arleth.nashorn</groupId>
+        <artifactId>nashorn-maven</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>printTestWorld</id>
+            <phase>test</phase>
+            <configuration>
+              <scripttext>java.lang.System.out.println('\n\n\nTest World\n\n\n');</scripttext>
+            </configuration>
+            <goals>
+              <goal>jsmojo</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>printTestWorldFromFile</id>
+            <phase>test</phase>
+            <configuration>
+              <scriptfile>./src/js/testworld.js</scriptfile>
+            </configuration>
+            <goals>
+              <goal>jsmojo</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>printTestWorld2</id>
+            <phase>test</phase>
+            <configuration>
+              <scripttext>java.lang.System.out.println('\n\n\nTest World from script again\n\n\n');</scripttext>
+            </configuration>
+            <goals>
+              <goal>jsmojo</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+</pre>
+
+This runs three seperate scripts, all printing to the console.
+
+JS + Maven from the command line
+===========
+
+Quickly exec'ing a script from the command line based on the dependency tree and target/classes folder of a maven project is a tiny bit more difficult due to the startup costs of maven.
+
+The obvious, and least satisfying, solution is to use exec:java 
+
+mvn exec:java -Dexec.mainClass="jdk.nashorn.tools.Shell" Dexec.args="src/js/test.js"
+
+This can take what seems like forever as it runs maven to generate the classpath, my solution is 
+
+    src/bash/nashorn.
+
+Run like so
+
+* nashorn [src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js)
+
+[src/js/test.js](https://github.com/patarleth/nashorn-mvn/blob/master/src/js/test.js) does three things -
+
+the include test.js script does this
+
+1. prints the content of the .js file
+2. creates an org.json.JSONObject, adds properties, then prints it using java.lang.System.out.println
+3. creates a nashorn json object, uses JSON.stringify to format it, printed iwth java.lang.System.out.println
+    
+Here some pseudo code for the src/bash/ shell scripts -
+
+src/bash/mvngencp
+
+    generates a project classpath based on mvn dependency:build-classpath
+
+src/bash/mvnsavecp
+
+    calls mvngencp and saves to a temp folder, returns the cp. Here's the nitty gritty -
+
+    if pom.xml exists
+      if ~/.tmp/escaped_foldername.cp.txt exists
+        if timestamp of pom.xml match the .cp.txt file 
+          use ~/.tmp/escaped_foldername.cp.txt
+        else
+          call mvngencp save to ~/.tmp/escaped_foldername.cp.txt
+        fi
+      else
+        call mvngencp save to ~/.tmp/escaped_foldername.cp.txt
+      fi
+      return cp
+    else
+      do nothing
+    fi      
+
+src/bash/nashorn
+
+    runs scripts based on mvnsavecp like so -
+
+    if pom.xml exists
+      cp = mvnsavecp
+      jjs -classpath "$cp"
+    fi
+
+enjoy your js + pom hacking
