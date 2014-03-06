@@ -9,7 +9,11 @@ If you're on windows you will need to run ubuntu in a virtual machine.
 
 <https://jdk8.java.net/download.html>
 
-if replacing your system jdk/jvm with 1.8 isn't your thing, try vagrant!
+if replacing your system's jdk/jvm with 1.8 isn't your thing, try vagrant!
+
+
+vagrant-up
+============
 
 <http://www.vagrantup.com/>
 
@@ -47,6 +51,9 @@ copy the source code from this project into ~/bin/
     chmod +x ./src/bash/*
     cp ./src/bash/* ~/bin/.
 
+
+nashorn
+===========
 
 Now that you've either got vagrant up/vagrant ssh working or set your computer up, it's time to test the project -
 
@@ -97,9 +104,9 @@ Nashorn features
 
 Ok, ok, ok.........SOOOOOOOO.....what the hell?
 
-Why switch away from the rhino inspired jsr-223 implementation that shipped in jdk1.6 to nashorn in 1.8? Why not just use rhino (<https://developer.mozilla.org/en-US/docs/Rhino>)?
+JDK8 rewrote the Rhino based javascript [jsr-223](https://www.jcp.org/en/jsr/detail?id=223) ScriptEngine with nashorn. Why not continue improving Rhino (<https://developer.mozilla.org/en-US/docs/Rhino>)?
 
-As if I had to tell you - performace. 
+Short answer, hotspot optimizations and overall performace. Long answer -
 
 TO envoke a method in a java class from a rhino script, rhino uses a single class that acts like a map or dispatcher that returns the requested method.  The implication of a single 'get/lookup' method is the creation of a megamorphic code path which Hotspot CANNOT optimize or inline. I love that word - megamorphic! thanks Szegedi.
 
@@ -118,3 +125,38 @@ links!
 * <http://openjdk.java.net/projects/nashorn/>
 * <https://wiki.openjdk.java.net/display/Nashorn/Main>
 * <https://bitbucket.org/adoptopenjdk/jdk8-nashorn>
+
+
+Maven
+===========
+
+Exec'ing a java main from a pom file is easy. I've included 2 sample java classes - ExecJsScriptEngine which can then be executed in a pom file like so -
+
+<pre>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <id>generateJavaClassesFromJson</id>
+            <phase>initialize</phase>
+            <configuration>
+              <mainClass>ExecJsScriptEngine</mainClass>
+              <arguments>
+                <argument>
+                  ./src/build/initialize.js
+                </argument>
+              </arguments>
+            </configuration>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        <executions>
+      <plugin>
+</pre>
+
+This strategty is definately a bit clumbsy, but it works. If you would like to parameterize the script checkout how to write maven plugins here:
+* <https://maven.apache.org/guides/plugin/guide-java-plugin-development.html>
+
