@@ -6,7 +6,7 @@
   <artifactId>nashorn-maven</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
-  <packaging>jar</packaging>
+  <packaging>maven-plugin</packaging>
   <name>sample maven project</name>
 
   <properties>
@@ -15,8 +15,34 @@
   </properties>
 
   <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.2</version>
+        <configuration>
+          <goalPrefix>mysql-jdbc-compliance</goalPrefix>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+          <execution>
+            <id>help-descriptor</id>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
   </build>
-
+  
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
