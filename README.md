@@ -93,28 +93,28 @@ If I have to tell you what maven is go away...no, no go here and read all about 
 Exec'ing a java main based on pom file is easy. I've included a couple sample java classes that show two ways to do this.  The first is ExecJsScriptEngine which executes a java main in a pom file  like so -
 
 <pre>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-        <executions>
-          <execution>
-            <id>demoJsFileAtInitPhase</id>
-            <phase>initialize</phase>
-            <configuration>
-              <mainClass>ExecJsScriptEngine</mainClass>
-              <arguments>
-                <argument>
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+        &lt;artifactId&gt;exec-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.2.1&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;demoJsFileAtInitPhase&lt;/id&gt;
+            &lt;phase&gt;initialize&lt;/phase&gt;
+            &lt;configuration&gt;
+              &lt;mainClass&gt;ExecJsScriptEngine&lt;/mainClass&gt;
+              &lt;arguments&gt;
+                &lt;argument&gt;
                   ./src/build/initialize.js
-                </argument>
-              </arguments>
-            </configuration>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+                &lt;/argument&gt;
+              &lt;/arguments&gt;
+            &lt;/configuration&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;java&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
 </pre>
 
 This strategty is definately a bit clumbsy, but it works. If you would like to parameterize the script or tighten up how you interact with the code, checkout the guide on plugins here:
@@ -124,43 +124,43 @@ This strategty is definately a bit clumbsy, but it works. If you would like to p
 If you do decide to convert the main into a Mojo plugin, I've included a very simple plugin JsScriptEngineMojo.java that gives you a head start. Configured like so -
 
 <pre>
-      <plugin>
-        <groupId>org.arleth.nashorn</groupId>
-        <artifactId>nashorn-maven</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <id>printTestWorld</id>
-            <phase>test</phase>
-            <configuration>
-              <scripttext>java.lang.System.out.println('\n\n\nTest World\n\n\n');</scripttext>
-            </configuration>
-            <goals>
-              <goal>jsmojo</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>printTestWorldFromFile</id>
-            <phase>test</phase>
-            <configuration>
-              <scriptfile>./src/js/testworld.js</scriptfile>
-            </configuration>
-            <goals>
-              <goal>jsmojo</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>printTestWorld2</id>
-            <phase>test</phase>
-            <configuration>
-              <scripttext>java.lang.System.out.println('\n\n\nTest World from script again\n\n\n');</scripttext>
-            </configuration>
-            <goals>
-              <goal>jsmojo</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.arleth.nashorn&lt;/groupId&gt;
+        &lt;artifactId&gt;nashorn-maven&lt;/artifactId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+        &lt;executions&gt;
+          &lt;execution&gt;
+            &lt;id&gt;printTestWorld&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;configuration&gt;
+              &lt;scripttext&gt;java.lang.System.out.println('\n\n\nTest World\n\n\n');&lt;/scripttext&gt;
+            &lt;/configuration&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;jsmojo&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;printTestWorldFromFile&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;configuration&gt;
+              &lt;scriptfile&gt;./src/js/testworld.js&lt;/scriptfile&gt;
+            &lt;/configuration&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;jsmojo&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+          &lt;execution&gt;
+            &lt;id&gt;printTestWorld2&lt;/id&gt;
+            &lt;phase&gt;test&lt;/phase&gt;
+            &lt;configuration&gt;
+              &lt;scripttext&gt;java.lang.System.out.println('\n\n\nTest World from script again\n\n\n');&lt;/scripttext&gt;
+            &lt;/configuration&gt;
+            &lt;goals&gt;
+              &lt;goal&gt;jsmojo&lt;/goal&gt;
+            &lt;/goals&gt;
+          &lt;/execution&gt;
+        &lt;/executions&gt;
+      &lt;/plugin&gt;
 
 </pre>
 
