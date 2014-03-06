@@ -32,7 +32,11 @@ public class JsScriptEngineMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException
     {
         ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
+        ScriptEngine engine = manager.getEngineByName("nashorn");
+        if(engine == null) {
+            System.out.println("nashorn not found defaulting to js");
+            engine = manager.getEngineByName("js");
+        }
         engine.put("scriptengine", engine);
         Reader reader;
         try {

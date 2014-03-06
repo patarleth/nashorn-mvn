@@ -9,7 +9,11 @@ import javax.script.ScriptEngineManager;
 public class ExecJsScriptEngine {
     public static void main(String[] args) {
         ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("js");
+        ScriptEngine engine = manager.getEngineByName("nashorn");
+        if(engine == null) {
+            System.out.println("nashorn not found defaulting to js");
+            engine = manager.getEngineByName("js");
+        }
         engine.put("scriptengine", engine);
         Reader reader;
         for( int i = 0; i < args.length; i++ ) {
